@@ -1,6 +1,6 @@
 package com.f_lin.future.spring.core.aop;
 
-import com.f_lin.future.spring.core.aop.tests.Cat;
+import com.f_lin.future.common.Cat;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**

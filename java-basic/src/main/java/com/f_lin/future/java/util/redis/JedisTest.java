@@ -1,6 +1,5 @@
 package com.f_lin.future.java.util.redis;
 
-import com.alibaba.fastjson.JSONObject;
 import com.f_lin.future.java.util.redis.po.UserInfo;
 import com.f_lin.future.java.util.redis.redlock.RedisWithReentrantLock;
 import lombok.extern.slf4j.Slf4j;
@@ -40,12 +39,12 @@ public class JedisTest {
                 .setName("tom")
                 .setSex(true);
 
-        Long hset = jedis.hset(KEY_USER_INFO, userInfo.getUserId(), JSONObject.toJSONString(userInfo));
+        Long hset = jedis.hset(KEY_USER_INFO, userInfo.getUserId(), null);//JSONObject.toJSONString(userInfo));
 
         String hget = jedis.hget(KEY_USER_INFO, userInfo.getUserId());
-        UserInfo parse = JSONObject.parseObject(hget, UserInfo.class);
+        //UserInfo parse = JSONObject.parseObject(hget, UserInfo.class);
 
-        log.info("返回值::{}", parse);
+        log.info("返回值::{}", "x");
     }
 
     @Test

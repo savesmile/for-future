@@ -1,7 +1,6 @@
 package com.f_lin.future.java.util.redis.delay_queue;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
+import com.fasterxml.jackson.core.type.TypeReference;
 import redis.clients.jedis.Jedis;
 
 import java.lang.reflect.Type;
@@ -11,7 +10,7 @@ import java.util.UUID;
 /**
  * 将消息封装成某个延时任务，丢到redis中的zset中。带权(延时时间)取出。可以以当前时间为准取出第一条数据，进行消费。
  * zrem() = removed当前主键的某个成员。
- *
+ * <p>
  * 优化点：
  * 多个进程取到之后再使用zrem进行争抢，那些没抢到的进程都是白取了一次任务，这是浪费。可以考虑使用lua scripting来优化一下这个逻辑，
  * 将zrangebyscore和zrem一同挪到服务器端进行原子化操作，这样多个进程之间争抢任务时就不会出现这种浪费了。
@@ -50,7 +49,7 @@ public class RedisDelayingQueue<T> {
         task.id = UUID.randomUUID().toString();
         task.msg = msg;
         //  序列化
-        String s = JSON.toJSONString(task);
+        String s = null;//JSON.toJSONString(task);
         // 塞入延时队列 ,5s 后再试
         jedis.zadd(queueKey, System.currentTimeMillis() + 5000, s);
     }
@@ -71,7 +70,7 @@ public class RedisDelayingQueue<T> {
             String s = values.iterator().next();
             if (jedis.zrem(queueKey, s) > 0) {
                 // 抢到了
-                TaskItem task = JSON.parseObject(s, TaskType);
+                TaskItem task = null;//JSON.parseObject(s, TaskType);
                 this.handleMsg(task.msg);
             }
         }

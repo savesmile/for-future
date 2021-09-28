@@ -1,0 +1,8 @@
+debug: true
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://106.12.90.33:27017/graduation
+  aop:
+    auto: true
