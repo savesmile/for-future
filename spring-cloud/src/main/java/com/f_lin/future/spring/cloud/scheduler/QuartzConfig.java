@@ -1,4 +1,4 @@
-package com.f_lin.future.java.scheduler;
+package com.f_lin.future.spring.cloud.scheduler;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package com.f_lin.future.java.scheduler;
+package com.f_lin.future.spring.cloud.scheduler;
 
 import org.quartz.spi.TriggerFiredBundle;
 import org.slf4j.Logger;

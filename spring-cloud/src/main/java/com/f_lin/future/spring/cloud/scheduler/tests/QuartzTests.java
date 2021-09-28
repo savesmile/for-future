@@ -1,7 +1,7 @@
-package com.f_lin.future.java.scheduler.tests;
+package com.f_lin.future.spring.cloud.scheduler.tests;
 
-import com.f_lin.future.spring.core.aop.tests.Cat;
-import com.f_lin.future.java.scheduler.QuartzManager;
+import com.f_lin.future.common.Cat;
+import com.f_lin.future.spring.cloud.scheduler.QuartzManager;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
