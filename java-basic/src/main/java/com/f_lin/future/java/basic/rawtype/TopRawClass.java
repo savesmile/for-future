@@ -14,7 +14,7 @@ public abstract class TopRawClass<T, O> {
 
 
     @SuppressWarnings("unchecked")
-    public static <T> Class<T> getRawType(Class<?> tClass, Integer order) {
+    public static <X> Class<X> getRawType(Class<?> tClass, Integer order) {
 
         Type superclass = tClass.getGenericSuperclass();
         if (superclass instanceof ParameterizedType) {
@@ -25,9 +25,9 @@ public abstract class TopRawClass<T, O> {
             }
             Type typeArgument = actualTypeArguments[order];
             if (typeArgument instanceof Class) {
-                return (Class<T>) typeArgument;
+                return (Class<X>) typeArgument;
             }
-            return (Class<T>) ((ParameterizedType) typeArgument).getRawType();
+            return (Class<X>) ((ParameterizedType) typeArgument).getRawType();
         }
         return getRawType((Class<?>) superclass, order);
     }
