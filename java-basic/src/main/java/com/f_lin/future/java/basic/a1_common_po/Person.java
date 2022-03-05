@@ -1,6 +1,8 @@
 package com.f_lin.future.java.basic.a1_common_po;
 
 /**
+ * javap -c -s -v -l
+ *
  * @author F_Lin fengjunlin@modnim.com
  * @date 2019/10/30 9:44
  **/
