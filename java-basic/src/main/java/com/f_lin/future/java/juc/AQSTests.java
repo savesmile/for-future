@@ -1,6 +1,8 @@
 package com.f_lin.future.java.juc;
 
 import java.util.concurrent.*;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author F_lin
@@ -8,9 +10,76 @@ import java.util.concurrent.*;
  **/
 public class AQSTests {
 
+    static ReentrantLock lock = new ReentrantLock();
+
     public static void main(String[] args) throws InterruptedException {
         //countDownLatchTest1();
-        cyclicBarrierTest();
+        //cyclicBarrierTest();
+        //lockTest();
+        Condition condition = lock.newCondition();
+        Condition condition2 = lock.newCondition();
+        new Thread(() -> {
+            lock.lock();
+            try {
+                System.out.println(Thread.currentThread().getName() + " get lock");
+                condition.await();
+                System.out.println(Thread.currentThread().getName() + " get lock22222");
+                condition2.await();
+                System.out.println(Thread.currentThread().getName() + " get lock and sleep 5s!");
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+                lock.unlock();
+            }
+        }, "thread-" + 1).start();
+
+        new Thread(() -> {
+            lock.lock();
+            try {
+                System.out.println(Thread.currentThread().getName() + " get lock");
+                condition.await();
+                condition2.signal();
+                System.out.println(Thread.currentThread().getName() + " get lock and sleep 5s!");
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+                lock.unlock();
+            }
+        }, "thread-" + 2).start();
+
+        Thread.sleep(500);
+
+        new Thread(() -> {
+            lock.lock();
+            try {
+                System.out.println(Thread.currentThread().getName() + " get lock and sleep 5s!");
+                Thread.sleep(5000);
+                condition.signalAll();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+                lock.unlock();
+            }
+        }, "thread-" + 3).start();
+
+    }
+
+    private static void lockTest() {
+        for (int i = 1; i < 4; i++) {
+            new Thread(() -> {
+                lock.lock();
+                try {
+                    System.out.println(Thread.currentThread().getName() + " get lock and sleep 5s!");
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } finally {
+                    lock.unlock();
+                }
+            }, "thread-" + i).start();
+        }
     }
 
 
