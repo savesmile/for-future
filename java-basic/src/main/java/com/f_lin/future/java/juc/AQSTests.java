@@ -16,6 +16,23 @@ public class AQSTests {
         //countDownLatchTest1();
         //cyclicBarrierTest();
         //lockTest();
+        //conditionTest();
+        CountDownLatch cdl = new CountDownLatch(4);
+        for (int i = 1; i < 5; i++) {
+            new Thread(() -> {
+                try {
+                    System.out.println(Thread.currentThread().getName() + " sleep 5s");
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                }
+                cdl.countDown();
+            }, "Thread-" + i).start();
+        }
+
+        cdl.await();
+    }
+
+    private static void conditionTest() throws InterruptedException {
         Condition condition = lock.newCondition();
         Condition condition2 = lock.newCondition();
         new Thread(() -> {
@@ -63,7 +80,6 @@ public class AQSTests {
                 lock.unlock();
             }
         }, "thread-" + 3).start();
-
     }
 
     private static void lockTest() {
