@@ -2,6 +2,7 @@ package com.f_lin.future.java.headfirst.factory.delay;
 
 import com.f_lin.future.java.headfirst.factory.Fruit;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,8 +34,8 @@ public class DelayInitFruitManor {
         } else {
             Fruit fruit = null;
             try {
-                fruit = tClass.newInstance();
-            } catch (InstantiationException | IllegalAccessException e) {
+                fruit = tClass.getDeclaredConstructor().newInstance();
+            } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
                 e.printStackTrace();
             }
 

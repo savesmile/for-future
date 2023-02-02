@@ -1,6 +1,7 @@
 package com.f_lin.future.java.headfirst.factory.simple;
 
 import com.f_lin.future.java.headfirst.factory.Fruit;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * 简单工厂模式//一个静态方法
@@ -14,9 +15,9 @@ public class SimpleFruitManor {
     public static <T extends Fruit> T cultivateFruit(Class<T> tClass) {
         T t = null;
         try {
-            t = tClass.newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
-            //e.printStackTrace();
+            t = tClass.getDeclaredConstructor().newInstance();
+        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+            e.printStackTrace();
         }
         return t;
     }

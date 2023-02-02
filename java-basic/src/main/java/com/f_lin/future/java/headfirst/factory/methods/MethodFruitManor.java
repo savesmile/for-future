@@ -2,6 +2,7 @@ package com.f_lin.future.java.headfirst.factory.methods;
 
 import com.f_lin.future.java.headfirst.factory.Fruit;
 import com.f_lin.future.java.headfirst.factory.FruitManor;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * 工厂方法模式
@@ -17,8 +18,8 @@ public class MethodFruitManor implements FruitManor {
     public <T extends Fruit> T cultivateFruit(Class<T> tClass) {
         T t = null;
         try {
-            t = tClass.newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
+            t = tClass.getDeclaredConstructor().newInstance();
+        } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
         return t;

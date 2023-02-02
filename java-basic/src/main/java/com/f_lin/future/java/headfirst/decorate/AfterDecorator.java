@@ -6,20 +6,20 @@ package com.f_lin.future.java.headfirst.decorate;
  * @author F_Lin fengjunlin@modnim.com
  * @date 2019/9/6 16:33
  **/
-public class BeforDecorator extends Decorator {
+public class AfterDecorator extends Decorator {
 
-    public BeforDecorator(Component component) {
+    public AfterDecorator(Component component) {
         super(component);
     }
 
-    private void before() {
+    private void after() {
 
     }
 
     @Override
     public void operate() {
-        before();
         super.operate();
+        after();
     }
 
 }
