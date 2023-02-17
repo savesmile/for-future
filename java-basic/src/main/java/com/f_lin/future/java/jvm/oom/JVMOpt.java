@@ -12,4 +12,9 @@ package com.f_lin.future.java.jvm.oom;
  * @since 2022/3/3
  */
 public class JVMOpt {
+
+    /**
+     * -XX:+UseG1GC -XX:G1HeapRegionSize=2m -Xms2g -Xmx2g -Xloggc:D:\doc\g1log -XX:+PrintGCDetails
+     * -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps
+     */
 }
