@@ -1,6 +1,9 @@
 package com.f_lin.future.java.juc;
 
 /**
+ * javac -encoding=UTF-8 xxx.java
+ * javap -v -l xxx.class
+ *
  * @author F_lin
  * @since 2019/4/7
  **/
