@@ -1,6 +1,10 @@
 package com.f_lin.future.java.juc;
 
-import java.util.concurrent.*;
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -10,33 +14,35 @@ import java.util.concurrent.locks.ReentrantLock;
  **/
 public class AQSTests {
 
-    static ReentrantLock lock = new ReentrantLock();
+    static ReentrantLock nonFairLock = new ReentrantLock(false); //default
+    static ReentrantLock fairLock = new ReentrantLock(true);
 
     public static void main(String[] args) throws InterruptedException {
         //countDownLatchTest1();
         //cyclicBarrierTest();
-        //lockTest();
+        lockTest();
+//        fairLockTest();
         //conditionTest();
-        CountDownLatch cdl = new CountDownLatch(4);
-        for (int i = 1; i < 5; i++) {
-            new Thread(() -> {
-                try {
-                    System.out.println(Thread.currentThread().getName() + " sleep 5s");
-                    Thread.sleep(5000);
-                } catch (InterruptedException e) {
-                }
-                cdl.countDown();
-            }, "Thread-" + i).start();
-        }
-
-        cdl.await();
+//        CountDownLatch cdl = new CountDownLatch(4);
+//        for (int i = 1; i < 5; i++) {
+//            new Thread(() -> {
+//                try {
+//                    System.out.println(Thread.currentThread().getName() + " sleep 5s");
+//                    Thread.sleep(5000);
+//                } catch (InterruptedException e) {
+//                }
+//                cdl.countDown();
+//            }, "Thread-" + i).start();
+//        }
+//
+//        cdl.await();
     }
 
     private static void conditionTest() throws InterruptedException {
-        Condition condition = lock.newCondition();
-        Condition condition2 = lock.newCondition();
+        Condition condition = nonFairLock.newCondition();
+        Condition condition2 = nonFairLock.newCondition();
         new Thread(() -> {
-            lock.lock();
+            nonFairLock.lock();
             try {
                 System.out.println(Thread.currentThread().getName() + " get lock");
                 condition.await();
@@ -47,12 +53,12 @@ public class AQSTests {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } finally {
-                lock.unlock();
+                nonFairLock.unlock();
             }
         }, "thread-" + 1).start();
 
         new Thread(() -> {
-            lock.lock();
+            nonFairLock.lock();
             try {
                 System.out.println(Thread.currentThread().getName() + " get lock");
                 condition.await();
@@ -62,14 +68,14 @@ public class AQSTests {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } finally {
-                lock.unlock();
+                nonFairLock.unlock();
             }
         }, "thread-" + 2).start();
 
         Thread.sleep(500);
 
         new Thread(() -> {
-            lock.lock();
+            nonFairLock.lock();
             try {
                 System.out.println(Thread.currentThread().getName() + " get lock and sleep 5s!");
                 Thread.sleep(5000);
@@ -77,7 +83,7 @@ public class AQSTests {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } finally {
-                lock.unlock();
+                nonFairLock.unlock();
             }
         }, "thread-" + 3).start();
     }
@@ -85,14 +91,30 @@ public class AQSTests {
     private static void lockTest() {
         for (int i = 1; i < 4; i++) {
             new Thread(() -> {
-                lock.lock();
+                nonFairLock.lock();
                 try {
                     System.out.println(Thread.currentThread().getName() + " get lock and sleep 5s!");
                     Thread.sleep(5000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } finally {
-                    lock.unlock();
+                    nonFairLock.unlock();
+                }
+            }, "thread-" + i).start();
+        }
+    }
+
+    private static void fairLockTest() {
+        for (int i = 1; i < 4; i++) {
+            new Thread(() -> {
+                fairLock.lock();
+                try {
+                    System.out.println(Thread.currentThread().getName() + " get lock and sleep 5s!");
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } finally {
+                    fairLock.unlock();
                 }
             }, "thread-" + i).start();
         }
