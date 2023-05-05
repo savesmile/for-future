@@ -1,25 +1,13 @@
-package com.f_lin.future.solution;
+package com.f_lin.future.solution.sword_finger_offer;
 
 /**
- * [
- * [1,   4,  7, 11, 15],
- * [2,   5,  8, 12, 19],
- * [3,   6,  9, 16, 22],
- * ]
- *
+ * 字符串不可变。
  * @author F_lin fengjunlin@sobey.com
  * @version 1.0
- * @since 2021/9/28
+ * @since 2023/3/29
  */
-public class solution {
-
-    public static void main(String[] args) {
-        System.out.println(replaceSpace(""));
-    }
-
-
-
-
+public class _05 {
+    //遍历法
     public static String replaceSpace(String s) {
         StringBuilder sb = new StringBuilder();
         for (char c : s.toCharArray()) {
@@ -30,5 +18,10 @@ public class solution {
             }
         }
         return sb.toString();
+    }
+
+    //直接替换
+    public static String replaceSpace2(String s) {
+        return s.replaceAll(" ", "%20");
     }
 }
