@@ -111,6 +111,10 @@ producer 新增了使用类似事务性的语义将消息发送到多个 topic p
 
 #### KAFKA HA(High Available)
 
+>HW（High Watermark）：俗称高水位，它标识了一个特定的消息偏移量（offset），消费者只能**拉取到这个 offset 之前的消息。分区 ISR 集合中的每个副本都会维护自身的 LEO（Log End Offset）：俗称日志末端位移，而 ISR 集合中最小的 LEO 即为分区的 HW，对消费者而言只能消费 HW 之前的消息。
+>LEO：该副本底层 log文件下一条要写入的消息的位移，例如 LEO=10 则当前文件已经写了10条消息，位移是[0,10)。
+>HW：所有分区已提交的的位移，一般HW<=LEO。
+
 ##### HA下的消息投递
 
 ​	Producer在发布消息到某个Partition时，先通过 Metadata （通过 Broker 获取并且缓存在 Producer 内） 找到该 Partition 的**Leader**，然后无论该Topic的Replication Factor为多少（也即该Partition有多少个Replica），Producer**只将该消息发送到该Partition的Leader**。Leader会将该消息写入其本地Log。**每个Follower都从Leader pull数据**。这种方式上，Follower存储的数据顺序与Leader保持一致。Follower在收到该消息并写入其Log后，向Leader**发送ACK**。一旦**Leader收到了ISR中的所有Replica的ACK**，该消息就被认为已经**commit**了，Leader将增加HW并且向Producer发送ACK。
@@ -121,7 +125,10 @@ ps: ISR(In-sync-replica，同步副本集。replica.lag.time.max.ms。follower�
 
 ![消息投递示意图](./md_image/Replication.png)
 
+##### HA下的broker
 
+
+##### HA下的消息消费
 
 
 
